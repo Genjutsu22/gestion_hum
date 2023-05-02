@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['middleware'=>"web"],function(){
     Route::get('/', [PosController::class, 'index']);
-    Route::view('login','login');
+    Route::view('login','login_page');
     Route::get('/demandes', [PosController::class, 'demandesPage']);
     Route::get('/posts', [PosController::class, 'postsPage']);
     Route::get('/employes', [PosController::class, 'employesPage']);

@@ -29,7 +29,7 @@ class PosController extends Controller
                ->value('table_name');
                    return view('admin.home',[ "data" => $data, "type"=>$table]);
         }
-       return redirect('/login');
+       return redirect('login');
     }
     public function employesPage(){
         $data = FacadesDB::table('employes')
@@ -54,7 +54,7 @@ class PosController extends Controller
              $request->session()->put('key',[$p[0]->id_personne,$p[0]->nom,$p[0]->prenom,$p[0]->cin]);
              return redirect('/');
         }else{
-            return back()->withInput($request->except('password'))->with('modal', 'password-incorrect');
+            return redirect('/login')->with('error', 'The email or password you entered is incorrect.');
         }
     }
 
@@ -66,6 +66,6 @@ class PosController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('login');
     }
 }

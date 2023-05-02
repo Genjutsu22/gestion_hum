@@ -14,7 +14,7 @@ class CustomAuth
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
-    {
+    { 
         $path = $request->path();
         if(($path == "login" ) && Session::get('key') ){
             return redirect('/');

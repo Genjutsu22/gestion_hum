@@ -1,11 +1,14 @@
 <header>
-        <a href="\" class="logo">MyLogo</a>
-        <ul>
-            <li ><a href="\" alt="Accueil" class="first">Accueil</a></li>
-            <li ><a href="\employes" alt="Liste Des Employés">Liste Des Employés</a></li>
-            <li ><a href="\posts" alt="Liste Des Postes">Liste Des Postes</a></li>
-            <li><a href="\demandes" alt="Offres D'emploi">Offres D'emploi</a></li>
-            <li>
+     <a href="/" alt="">
+     <img src="{{asset('images/logo2.png')}}" class="im_logo" href="/">
+     </a>
+       
+        <ul class="ma_list">
+            <li class="ele"><a href="\" alt="Accueil" class="first">Accueil</a></li>
+            <li class="ele"><a href="\employes" alt="Liste Des Employés">Liste Des Employés</a></li>
+            <li class="ele"><a href="\posts" alt="Liste Des Postes">Liste Des Postes</a></li>
+            <li class="ele"><a href="\demandes" alt="Offres D'emploi">Offres D'emploi</a></li>
+            <li class="ele">
             @yield('icon')
             </li>
         </ul>

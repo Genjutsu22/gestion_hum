@@ -15,32 +15,21 @@ header{
     z-index: 100;
 }
 
-header .logo{
-color:rgb(255, 255, 255);
-font-weight: 600;
-text-decoration: none;
-font-size: 1.4em;
-text-transform: uppercase;
-transition: color .9ms ease;
-
+header .im_logo{
+    height: 75px;
+    cursor: pointer;
 }
-
-header .logo:hover{
-    color:#f1cbca;
-    animation-duration: .2ms;
-}
-
-ul{
+.ma_list{
     display: flex;
     justify-content: center;
     align-items: center;
 }
-ul li {
+.ele{
 list-style:none;
 margin-left: 40px;
 }
 
- a
+ .ma_list a
 {
     text-decoration: none;
     cursor: pointer;
@@ -51,7 +40,7 @@ margin-left: 40px;
 }
 
 
- a::before{
+ .ma_list a::before{
     position: absolute;
     color: #f1cbca;
     overflow: hidden;
@@ -61,7 +50,7 @@ margin-left: 40px;
     opacity: 0;
 } 
 
- a:hover:before
+.ma_list a:hover:before
 {
     transform: scale(1);
     opacity: 1;
