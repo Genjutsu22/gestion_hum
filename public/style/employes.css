@@ -6,9 +6,14 @@ html, body
     margin: 0px;
     background-color: #63618e;
 }
-.container-1 :not(table){
+ .container-1{
   padding-top: 100px;
   padding-left: 10px;
   padding-right: 10px;
   background-color: #63618e;
 }
+
+select{
+  color:#63618e;
+}
+
