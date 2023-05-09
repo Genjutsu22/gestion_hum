@@ -19,6 +19,7 @@ class demande_emploi extends Model
         'id_candidat',
         'id_offre',
         'type_demande',
+        'accepted'
     ];
 
     public function candidat()

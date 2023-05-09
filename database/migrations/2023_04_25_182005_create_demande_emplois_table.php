@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('id_offre');
             $table->primary(['id_candidat', 'id_offre']);
             $table->string('type_demande');
+            $table->boolean('accepted');
             $table->foreign('id_candidat')->references('id_candidat')->on('candidats')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_offre')->references('id_offre')->on('offre_emplois')->onDelete('cascade')->onUpdate('cascade');
         });

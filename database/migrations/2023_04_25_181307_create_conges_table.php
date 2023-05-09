@@ -13,9 +13,16 @@ return new class extends Migration
     {
         Schema::create('conges', function (Blueprint $table) {
             $table->increments('id_conge');
+            $table->unsignedInteger('id_employe');
             $table->date('date_debut');
             $table->date('date_fin');
-            $table->string('certificat_medical')->unique();
+            $table->string('certificat_medical')->unique()->nullable();
+            $table->timestamp('date_demande');
+            $table->boolean('etat')->nullable();
+            $table->string('justif')->nullable();
+            $table->string('type_conge');
+            $table->timestamp('date_accept')->nullable();
+            $table->foreign('id_employe')->references('id_employe')->on('employes')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

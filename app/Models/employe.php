@@ -11,7 +11,7 @@ class employe extends Model
 {
     use HasFactory;
     protected $table = 'employes';
-
+    protected $primaryKey = 'id_employe';
     protected $fillable = [
         'id_personne',
         'id_prof',

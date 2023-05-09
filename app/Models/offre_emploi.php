@@ -12,12 +12,16 @@ class offre_emploi extends Model
 
     protected $primaryKey = 'id_offre';
 
-    protected $fillable = ['id_prof', 'detail'];
+    protected $fillable = ['id_prof', 'detail','id_depart','date_pub','termine'];
 
     public $timestamps = false;
 
     public function profession()
     {
         return $this->belongsTo('App\Models\Prof', 'id_prof');
+    }
+    public function departement()
+    {
+        return $this->belongsTo(Departement::class, 'id_depart');
     }
 }

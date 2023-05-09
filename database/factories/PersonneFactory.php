@@ -18,13 +18,15 @@ class PersonneFactory extends Factory
      */
     public function definition(): array
     {
+        $i = 1;
         return [
-            'id_adresse' => fake()->randomNumber(1,10),
+            'id_adresse' => $i,
             'nom' => fake()->firstname(),
             'prenom'=>fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'cin'=> $this->faker->unique()->regexify('[A-Z0-9]{6}'),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'// password
         ];
+        $i++;
     }
 }

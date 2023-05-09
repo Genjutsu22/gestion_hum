@@ -12,7 +12,7 @@
 <div class="dropdown">
             <i class="fas fa-cog" id="dropbtn" onclick="toggleDropdown()"></i>
             <div class="dropdown-content" id="myDropdown">
-            <a href="#" alt="Change Password">Change Password</a>
+            <a href="{{route('change_password',$data[0])}}" alt="Change Password">Change Password</a>
             <a href="{{ route('logout')}}"
                  onclick="event.preventDefault();
                        document.getElementById('logout-form').submit();" alt="LOGOUT">LOGOUT <i class="fas fa-power-off"></i></a>
@@ -22,19 +22,20 @@
         </form>
             </div>
 @endsection
+
 @if($type == "admin")
 @include('admin.head')
 @include('admin.svg_admin')
-<!-- <img src="{{asset('images/emplo.svg')}}" class="bg-img"> -->
 <div class="container-1">
 <div class="text-area">
 <p class="ttl">Bienvenue, {{ $data[1] }} {{$data[2]}}</p>
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>
 <button class="custom-btn btn-13">Read More</button>
 </div>
+</div>
 @elseif($type="employe")
-@include('admin.head')
-<img src="{{asset('images/empl.png')}}" class="bg-img"> 
+@include('employes.head')
+@include('employes.svg_employe')
 <div class="text-area">
 <p class="ttl">Bienvenue, {{ $data[1] }} {{$data[2]}}</p>
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>
@@ -48,7 +49,8 @@
 </div>
 @endif
 </div>
-<div class="wav">
+
+<!-- <div class="wav"> -->
 <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
 <defs>
 <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
@@ -60,8 +62,8 @@
 <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff"></use>
 </g>
 </svg>
-</div>
-</div>
+
+<!-- </div> -->
 
 <div class="content flex">
     <ul>

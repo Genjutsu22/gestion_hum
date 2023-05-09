@@ -12,6 +12,7 @@ html, body
   translate: translateY(50%,50%);
   padding-bottom: 0;
 }
+
 .animated{
     height: 600px;
     width: 600px;
@@ -118,14 +119,13 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
+ flex-direction: column;
 }
-
 .waves {
   position:relative;
   width: 100%;
   height:13vh;
-/*Fix for safari gap*/
+  margin-top: -45px;
   min-height:100px;
   max-height:110px;
 }
