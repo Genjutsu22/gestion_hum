@@ -22,27 +22,30 @@
         </form>
             </div>
 @endsection
+@php
+    $id = $data[0];
+@endphp
 
+<div class="container-1">
 @if($type == "admin")
 @include('admin.head')
 @include('admin.svg_admin')
-<div class="container-1">
+
 <div class="text-area">
 <p class="ttl">Bienvenue, {{ $data[1] }} {{$data[2]}}</p>
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>
-<button class="custom-btn btn-13">Read More</button>
+
 </div>
 </div>
-@elseif($type="employe")
+@elseif($type == "employe")
 @include('employes.head')
 @include('employes.svg_employe')
 <div class="text-area">
 <p class="ttl">Bienvenue, {{ $data[1] }} {{$data[2]}}</p>
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>
 </div>
-@elseif($type="cnadidat")
+@elseif($type == "candidat")
 @include('admin.head')
-<img src="{{asset('images/empl.png')}}" class="bg-img"> 
 <div class="text-area">
 <p class="ttl">Bienvenue, {{ $data[1] }} {{$data[2]}}</p>
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>

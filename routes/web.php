@@ -40,6 +40,9 @@ Route::group(['middleware'=>"web"],function(){
     Route::post('/refuse_offre/{id}', [PosController::class, 'refuse_offre'])->name('refuse_offre');
     Route::post('/ajouter_candidat', [PosController::class, 'ajouter_candidat'])->name('ajouter_candidat');
     Route::get('/change_password/{id}', [PosController::class, 'change_password'])->name('change_password');
+    Route::post('/passchange', [PosController::class, 'passchange'])->name('passchange');
+    Route::get('/mes_demandes', [PosController::class, 'mes_demandes'])->name('mes_demandes');
+    
 });
 Route::fallback(function () {
     return view('errors.error404');

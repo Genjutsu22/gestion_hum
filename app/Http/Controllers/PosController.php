@@ -16,24 +16,41 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 class PosController extends Controller
 {
+    public function check_user($id){  
+        $adminTable = FacadesDB::table('admins')
+            ->select(FacadesDB::raw("'admin' as table_name"))
+            ->where('id_personne', $id)
+            ->value('table_name');
+        
+        $employeTable = FacadesDB::table('employes')
+            ->select(FacadesDB::raw("'employe' as table_name"))
+            ->where('id_personne', $id)
+            ->value('table_name');
+        
+        $candidatTable = FacadesDB::table('candidats')
+            ->select(FacadesDB::raw("'candidat' as table_name"))
+            ->where('id_personne', $id)
+            ->value('table_name');
+        
+        if ($adminTable) {
+            return $adminTable;
+        } elseif ($employeTable) {
+            return $employeTable;
+        } elseif ($candidatTable) {
+           return $candidatTable;
+        }
+        return null;
+    }
     public function index(){
+        
         $data = Session::get('key');
         if(!empty($data)){
-            $id = $data[0]; 
-            $table = FacadesDB::table('admins')
-             ->select(FacadesDB::raw("'admin' as table_name"))
+            $id = $data[0];
+            $employeId = FacadesDB::table('employes')
              ->where('id_personne', $id)
-             ->orWhere(function($query) use ($id) {
-                 $query->select(FacadesDB::raw("'employe' as table_name"))
-                     ->where('id_personne', $id)
-                     ->from('employes');
-         })
-                     ->orWhere(function($query) use ($id) {
-                 $query->select(FacadesDB::raw("'candidat' as table_name"))
-                    ->where('id_personne', $id)
-                    ->from('candidats');
-         })
-               ->value('table_name');
+             ->value('id_employe');
+            Session::put('id',$employeId);
+           $table = $this->check_user($id);
                    return view('admin.home',[ "data" => $data, "type"=>$table]);
         }
        return redirect('login');
@@ -126,6 +143,7 @@ public function conge_accept($id_conge){
     try{
         $conge = conge::find($id_conge);
         $conge->etat = '1';
+        $conge->date_accept= now();
         $conge->save();
         return back()->with('success', "Congé est accepté !");
     }catch (\Throwable $th) {
@@ -345,6 +363,29 @@ public function refuse_offre(request $request, $id_candidat){
    }
    public function change_password($id) {
     $pers = personne::where('id_personne', $id)->first();
-    return view('change_pass', ["pers" => $pers]);
+    $table = $this->check_user($id);
+    return view('change_pass', ["pers" => $pers,"type"=>$table]);
+   }
+   public function passchange(Request $request) {
+    $p = personne::where('id_personne', $request->input('idemploye'))->get();
+    if ($request->input('nvpass') == $request->input('conpass')) {
+        if ($p->count() > 0 && ($p->first()->password == md5($request->input('oldpass')))) {
+            $p->first()->password = md5($request->input('nvpass'));
+            $p->first()->save();
+            return back()->with('success', 'Mot de passe changé avec succès !');
+        } else {
+            return back()->with('error', 'Ancien mot de passe incorrect !');
+        }
+    }
+    return back()->with('error', 'La confirmation du mot de passe est incorrecte !');
 }
+  public function mes_demandes(){
+    $id = Session::get('id');
+    $conges = conge::where('id_employe',$id)->get();
+    // $personne = FacadesDB::table('employes')
+    // ->where('id_employe', $id)
+    // ->join('personnes', 'personnes.id_personne', '=', 'employes.id_personne')
+    // ->get();
+    return view('employes.mes_demandes',["conges"=>$conges,"id"=>$id]);
+  }
 }  

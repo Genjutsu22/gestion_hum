@@ -5,9 +5,8 @@
        
         <ul class="ma_list">
             <li class="ele"><a href="\" alt="Accueil" class="first">Accueil</a></li>
-            <li class="ele"><a href="\" alt="Mon compte">Mon compte</a></li>
             <li class="ele"><a href="\" alt="Demande de congé">Demande de congé</a></li>
-            <li class="ele"><a href="\" alt="Mes demandes de congé">Mes demandes de congé</a></li>
+            <li class="ele"><a href="{{ route('mes_demandes') }}" alt="Mes demandes de congé">Mes demandes de congé</a></li>
             <li class="ele">
             @yield('icon')
             </li>

@@ -22,8 +22,7 @@
             @csrf
         </form>
 @endsection
-@include('admin.head')
-
+@include('employes.head')
 <script type="text/javascript" src="/media/js/site.js?_=e9941f271f8b970b156847cf7274c719" data-domain="datatables.net" data-api="https://plausible.sprymedia.co.uk/api/event"></script>
 	<script src="/media/js/dynamic.php?comments-page=examples%2Fstyling%2Fbootstrap5.html"></script>
 	<!-- <script defer async src="https://media.ethicalads.io/media/client/ethicalads.min.js" onload="window.dtAds()" onerror="window.dtAds()"></script> -->
@@ -33,67 +32,49 @@
 	<script type="text/javascript" language="javascript" src="../resources/demo.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" class="init">
-	
-
 $(document).ready(function () {
     $('#student-datatable').DataTable();
 });
-$(document).ready(function(){
-        $("#alert").show();
-     });
-     setTimeout(function() {
-        $("#alert").fadeOut();
-     }, 5000);
-
 	</script>
  
  <div class="container-1 ">
 
 
 
-@if(session('error'))
-    <div id="alert" class="alert alert-danger" style="display:none; text-align:center;">
-        <i class="fas fa-exclamation-circle"></i>   <strong>{{session('error')}}</strong> 
-    </div>
-@elseif(session('success'))
-    <div id="alert" class="alert alert-success" style="display:none; text-align:center;">
-        <i class="fas fa-check-circle"></i>   <strong>{{session('success')}}</strong> 
-    </div>
-@endif
-<h1>Les demandes de congés{{" de ".$employe[0]->nom." ".$employe[0]->prenom}}</h1>
-<h6>Accepter ou refuser</h6>
+{{$id}}
+<h1>Vos demandes de congés</h1>
+<h6>Ici vous pouvez voir vous demandes de congé</h6>
 <table id="student-datatable" class="table table-striped  table-hover table-highlight table-checkable" cellspacing="0">
 <thead>
 <tr>
-                <th >CIN</th>
+                <th >ID</th>
                 <th >Date début</th>
                 <th >Date fin</th>
                 <th >Certificat medical</th>
                 <th >Date demande</th>
                 <th >Type</th>
-                <th >Accepter/refuser</th>
+                <th >Date d'accept</th>
+                <th> Etat </th>
             </tr>
 </thead>
 <tbody>
 @foreach($conges as $conge)
   <tr class="table-light">
-    <th>{{$employe[0]->cin}}</th>
+    <th>{{$conge->id_conge}}</th>
     <th>{{$conge->date_debut}}</th>
     <th>{{$conge->date_fin}}</th>
     <th>{{$conge->certificat_medical}}</th>
     <th>{{$conge->date_demande}}</th>
     <th>{{$conge->type_conge}}</th>
+    <th>{{$conge->date_accept}}</th>
     <th>
-    <form action="{{ route('conge_accept', $conge->id_conge) }}" method="post" id="accept-form-{{ $conge->id_conge }}">
-            @csrf
-    </form>
-     
-    <button type="submit" class="btn btn-default accept-conge" data-conge-id="{{$conge->id_conge}}" ><i class="fa fa-check-circle"></i></button>
-    <button type="submit" class="btn btn-default delete-conge" data-conge-id="{{$conge->id_conge}}" data-bs-toggle="modal" data-bs-target="#myModal_show"><i class="fa fa-times-circle"></i></button>      
-    
-  
-   
-    
+        @if($conge->etat == '1')
+        <i class="fa fa-check-circle">
+        @elseif($conge->etat == '0')
+        <i class="fa fa-times-circle">
+        @elseif($conge->etat == null)
+        <i class="fa fa-clock"></i>
+        @endif
     </th>
   </tr>
 @endforeach 
