@@ -81,11 +81,11 @@ $(document).ready(function () {
     <th>{{$offre->type_emploi}}</th>
     <th>
         @if($offre->accepted == '1')
-        <i class="fas fa-check-double fa-lg fa-circle"></i>
+        <i class="fas fa-check-double fa-lg fa-circle" title="accepter"></i>
         @elseif($offre->accepted == '0')
-        <i class="fa fa-times-circle fa-lg"></i>
+        <i class="fa fa-times-circle fa-lg" title="refuser"></i>
         @elseif($offre->accepted == null)
-        <i class="fa fa-clock fa-lg"></i>
+        <i class="fa fa-clock fa-lg"></i title="en attend">
         @endif
     </th>
   </tr>

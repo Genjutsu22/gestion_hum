@@ -96,8 +96,8 @@ $(document).ready(function(){
             @csrf
     </form>
      
-    <button type="submit" class="btn btn-default accept-conge" data-conge-id="{{$conge->id_conge}}" ><i class="fa fa-check-circle"></i></button>
-    <button type="submit" class="btn btn-default delete-conge" data-conge-id="{{$conge->id_conge}}" data-bs-toggle="modal" data-bs-target="#myModal_show"><i class="fa fa-times-circle"></i></button>      
+    <button type="submit" class="btn btn-default accept-conge" data-conge-id="{{$conge->id_conge}}" ><i class="fa fa-check-circle" title="accepter"></i></button>
+    <button type="submit" class="btn btn-default delete-conge" data-conge-id="{{$conge->id_conge}}" data-bs-toggle="modal" data-bs-target="#myModal_show"><i class="fa fa-times-circle" title="refuser"></i></button>      
     
   
    

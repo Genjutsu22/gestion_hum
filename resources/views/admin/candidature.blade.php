@@ -112,8 +112,8 @@ $(document).ready(function(){
         <input name="idoffre" id="idoffre_ref" style="display :none;" value="">
     </form>
    
-    <button type="submit" class="btn btn-default accept-offre" data-demande-id="{{$demande->id_candidat}}" data-offre-id="{{$demande->id_offre}}"><i class="fa fa-check-circle"></i></button>
-    <button type="submit" class="btn btn-default refuse-offre" data-demande-id="{{$demande->id_candidat}}" data-offre-id="{{$demande->id_offre}}" ><i class="fa fa-times-circle"></i></button>      
+    <button type="submit" class="btn btn-default accept-offre" data-demande-id="{{$demande->id_candidat}}" data-offre-id="{{$demande->id_offre}}"><i class="fa fa-check-circle" title="accepter"></i></button>
+    <button type="submit" class="btn btn-default refuse-offre" data-demande-id="{{$demande->id_candidat}}" data-offre-id="{{$demande->id_offre}}" ><i class="fa fa-times-circle" title="refuser"></i></button>      
     
   
    

@@ -106,9 +106,9 @@ $(document).ready(function(){
     data-personne-bureau ="{{$arr->num_bureau}}"
     data-employe-idemploye = "{{$arr->id_employe}}"
     data-personne-cin = "{{$arr->cin}}"
-    data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa fa-edit"></i></button>            
-    <button type="submit" class="btn btn-default delete-student-btn" data-personne-id="{{$arr->id_personne}}"><i class="fa fa-trash"></i></button>
-    <button type="submit" class="btn btn-default show-student-btn"  data-employe-id="{{$arr->id_employe}}" ><i class="fa fa-eye"></i></button>
+    data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa fa-edit" title="modifier"></i></button>            
+    <button type="submit" class="btn btn-default delete-student-btn" data-personne-id="{{$arr->id_personne}}"><i class="fa fa-trash" title="supprimer"></i></button>
+    <button type="submit" class="btn btn-default show-student-btn"  data-employe-id="{{$arr->id_employe}}" ><i class="fa fa-eye" title="voir les demandes"></i></button>
     
     </th>
   </tr>

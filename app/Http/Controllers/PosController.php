@@ -509,8 +509,10 @@ $offres = FacadesDB::table('candidats')
     ->join('departements', 'departements.id_depart', '=', 'offre_emplois.id_depart')
     ->join('professions', 'professions.id_prof', '=', 'offre_emplois.id_prof')
     ->get();
-return view('candidat.demandes', ["offres" => $offres]);
-
+return view('candidat.demandes', ["offres" => $offres]);  
+}
+public function apropos(){
     
+    return view('apropos');
 }
 } 

@@ -114,10 +114,11 @@ $types = [
     data-depart-id="{{$offre->id_depart}}"
     data-prof-id="{{$offre->id_prof}}"
     data-offre-details="{{$offre->detail}}"
-    data-bs-toggle="modal" data-bs-target="#myModal_offre"><i class="fa fa-edit"></i></button>            
-    <button type="submit" class="btn btn-default delete-offre-btn" data-id-offre="{{$offre->id_offre}}"><i class="fa fa-trash"></i></button>
-    <button type="submit" class="btn btn-default show-offre-btn"  data-id-offre="{{$offre->id_offre}}" data-type="{{$offre->type_emploi}}"><i class="fa fa-eye"></i></button>
-    <button type="submit" class="btn btn-default inactive-offre-btn" data-id-offre="{{$offre->id_offre}}"><i class="fas fa-ban"></i> </button>
+    data-type="{{$offre->type_emploi}}"
+    data-bs-toggle="modal" data-bs-target="#myModal_offre"><i class="fa fa-edit" title="modifier"></i></button>            
+    <button type="submit" class="btn btn-default delete-offre-btn" data-id-offre="{{$offre->id_offre}}"><i class="fa fa-trash" title="supprimer"></i></button>
+    <button type="submit" class="btn btn-default show-offre-btn"  data-id-offre="{{$offre->id_offre}}" ><i class="fa fa-eye" title="voir les demandes"></i></button>
+    <button type="submit" class="btn btn-default inactive-offre-btn" data-id-offre="{{$offre->id_offre}}"><i class="fas fa-ban" title="terminer l'offre"></i> </button>
     </th>
   </tr>
 @endforeach 
@@ -208,8 +209,7 @@ $types = [
   </select>   
 </div>
 <div class="form-floating">
-  <select class="custom-select" id="inputGroupSelect05" name="typemploi" required>
-  <option value="" disabled selected>Type d'emploi</option>
+  <select class="custom-select" id="inputGroupSelect06" name="typemploi" required>
     @foreach($types as $type)
     <option value="{{$type}}">{{$type}}</option>
     @endforeach
@@ -334,7 +334,7 @@ $(document).on("click", ".edit-offre-btn", function () {
         $("#idoffre").val(offre);
         $("#inputGroupSelect03").val(depart);
         $("#inputGroupSelect04").val(prof);
-        $("#inputGroupSelect05").val(type);
+        $("#inputGroupSelect06").val(type);
     });
 
 

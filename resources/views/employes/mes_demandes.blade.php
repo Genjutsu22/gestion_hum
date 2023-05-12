@@ -76,11 +76,11 @@ $(document).ready(function () {
     <th>{{$conge->date_accept?: '--------' }}</th>
     <th>
         @if($conge->etat == '1')
-        <i class="fas fa-check-double fa-lg fa-circle"></i>
+        <i class="fas fa-check-double fa-lg fa-circle" title="accepter"></i>
         @elseif($conge->etat == '0')
-        <i class="fa fa-times-circle fa-lg"></i>
+        <i class="fa fa-times-circle fa-lg" title="refuser"></i>
         @elseif($conge->etat == null)
-        <i class="fa fa-clock fa-lg"></i>
+        <i class="fa fa-clock fa-lg" title="en attend"></i>
         @endif
     </th>
   </tr>

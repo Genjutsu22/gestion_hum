@@ -22,9 +22,7 @@
         </form>
             </div>
 @endsection
-@php
-    $id = $data[0];
-@endphp
+
 
 <div class="container-1">
 @if($type == "admin")
@@ -32,8 +30,11 @@
 @include('admin.svg_admin')
 
 <div class="text-area">
-<p class="ttl">Bienvenue, {{ $data[1] }} {{$data[2]}}</p>
+<p class="ttl">Bienvenue, <br>{{ $data[1] }} {{$data[2]}}</p>
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>
+<a href="{{ route('apropos') }}">
+  <button type="button" class="custom-btn btn-13">À propos <span class="fas fa-arrow-right"></span></button>
+</a>
 
 </div>
 </div>
@@ -41,15 +42,21 @@
 @include('employes.head')
 @include('employes.svg_employe')
 <div class="text-area">
-<p class="ttl">Bienvenue, {{ $data[1] }} {{$data[2]}}</p>
+<p class="ttl">Bienvenue,  <br>{{ $data[1] }} {{$data[2]}}</p>
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>
+<a href="{{ route('apropos') }}">
+  <button type="button" class="custom-btn btn-13">À propos <span class="fas fa-arrow-right"></span></button>
+</a>
 </div>
 @elseif($type == "candidat")
 @include('candidat.head')
 @include('candidat.svg_candidat')
 <div class="text-area">
-<p class="ttl">Bienvenue, {{ $data[1] }} {{$data[2]}}</p>
+<p class="ttl">Bienvenue, <br>{{ $data[1] }} {{$data[2]}}</p>
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>
+<a href="route('apropos')">
+  <button type="button" class="custom-btn btn-13">À propos <span class="fas fa-arrow-right"></span></button>
+</a>
 </div>
 @endif
 </div>
