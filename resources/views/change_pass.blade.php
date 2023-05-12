@@ -22,7 +22,7 @@
 @elseif($type =="employe")
     @include('employes.head')
 @elseif($type == "candidat")
-   
+    @include('candidat.head') 
 @endif
 
 	<script type="text/javascript" class="init">

@@ -48,7 +48,16 @@ $(document).ready(function(){
 	</script>
  
  <div class="container-1 ">
-
+@php 
+$types = [
+    "Emploi à temps plein",
+    "Emploi à temps partiel",
+    "Contrat à durée déterminée",
+    "Contrat à durée indéterminée",
+    "Travail temporaire",
+    "Stage"
+];
+@endphp
 
 
 @if(session('error'))
@@ -75,6 +84,7 @@ $(document).ready(function(){
                 <th >Profession</th>  
                 <th >Date de Publication</th>
                 <th >Detail </th>
+                <th >Type d'emploi </th>
                 <th > Actions </th>
             </tr>
 </thead>
@@ -88,6 +98,7 @@ $(document).ready(function(){
     <th><a href="{{ url('download_offre',$offre->detail) }}" download>
   <button class="btn btn-primary"><i class="fa fa-download"></i></button>
 </a></th>
+    <th>{{$offre->type_emploi}}</th>
     <th>
     <form action="{{route('delete_offre',$offre->id_offre)}}" method="post" id="delete-form-{{$offre->id_offre}}">
             @csrf
@@ -96,13 +107,17 @@ $(document).ready(function(){
     <form action="{{ route('offres_details', $offre->id_offre) }}" method="get" id="show-form-{{ $offre->id_offre }}">
           @csrf
     </form>
+    <form action="{{ route('offres_inactive', $offre->id_offre) }}" method="post" id="inactive-form-{{ $offre->id_offre }}">
+          @csrf
+    </form>
     <button type="button" class="btn btn-default edit-offre-btn"  data-offre-id="{{$offre->id_offre}}"
     data-depart-id="{{$offre->id_depart}}"
     data-prof-id="{{$offre->id_prof}}"
     data-offre-details="{{$offre->detail}}"
     data-bs-toggle="modal" data-bs-target="#myModal_offre"><i class="fa fa-edit"></i></button>            
     <button type="submit" class="btn btn-default delete-offre-btn" data-id-offre="{{$offre->id_offre}}"><i class="fa fa-trash"></i></button>
-    <button type="submit" class="btn btn-default show-offre-btn"  data-id-offre="{{$offre->id_offre}}" ><i class="fa fa-eye"></i></button>
+    <button type="submit" class="btn btn-default show-offre-btn"  data-id-offre="{{$offre->id_offre}}" data-type="{{$offre->type_emploi}}"><i class="fa fa-eye"></i></button>
+    <button type="submit" class="btn btn-default inactive-offre-btn" data-id-offre="{{$offre->id_offre}}"><i class="fas fa-ban"></i> </button>
     </th>
   </tr>
 @endforeach 
@@ -124,7 +139,7 @@ $(document).ready(function(){
     <form action="{{ route('upload.file') }}" method="post" id="add-offre-form" enctype="multipart/form-data">
           @csrf
 <div class="form-floating">
-  <select class="custom-select" id="inputGroupSelect03" name="iddepart">
+  <select class="custom-select" id="inputGroupSelect03" name="iddepart" required>
   <option value="" disabled selected>Département</option>
     @foreach($departs as $dep)
     <option value="{{$dep->id_depart}}" >{{$dep->nom_depart}}</option>
@@ -132,10 +147,18 @@ $(document).ready(function(){
   </select>
 </div>  
 <div class="form-floating">
-  <select class="custom-select" id="inputGroupSelect04" name="idprof">
+  <select class="custom-select" id="inputGroupSelect04" name="idprof" required>
   <option value="" disabled selected>Profession</option>
     @foreach($profs as $prof)
     <option value="{{$prof->id_prof}}">{{$prof->nom_prof}}</option>
+    @endforeach
+  </select>   
+</div>
+<div class="form-floating">
+  <select class="custom-select" id="inputGroupSelect05" name="typemploi" required>
+  <option value="" disabled selected>Type d'emploi</option>
+    @foreach($types as $type)
+    <option value="{{$type}}">{{$type}}</option>
     @endforeach
   </select>   
 </div>
@@ -144,7 +167,7 @@ $(document).ready(function(){
   <div class="file-select">
     <div class="file-select-button">Choose File</div>
     <div class="file-select-name">Ajouter un descriptif...</div>
-    <input type="file" name="chooseFile" class="choose-file">
+    <input type="file" name="chooseFile" class="choose-file" required>
   </div>
 </div>
 </div>
@@ -161,34 +184,41 @@ $(document).ready(function(){
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modifier un employé</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Modifier un offre</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             <section class="registration-form">
-    <h3>Remplir la justification de refuse :</h3>
+    <h3>Remplir les champs :</h3>
     <form action="{{ route('conge_refuse') }}" method="post" id="update-form">
           @csrf
           <input type="text" style="display: none;" name="idoffre" id="idoffre" value="">
 <div class="form-floating">
-  <select class="custom-select" id="inputGroupSelect03" name="depart_id">
+  <select class="custom-select" id="inputGroupSelect03" name="depart_id" required>
     @foreach($departs as $dep)
     <option value="{{$dep->id_depart}}" >{{$dep->nom_depart}}</option>
     @endforeach
   </select>
 </div>  
 <div class="form-floating">
-  <select class="custom-select" id="inputGroupSelect04" name="prof_id">
+  <select class="custom-select" id="inputGroupSelect04" name="prof_id" required>
     @foreach($profs as $prof)
     <option value="{{$prof->id_prof}}">{{$prof->nom_prof}}</option>
     @endforeach
   </select>   
 </div>
-
+<div class="form-floating">
+  <select class="custom-select" id="inputGroupSelect05" name="typemploi" required>
+  <option value="" disabled selected>Type d'emploi</option>
+    @foreach($types as $type)
+    <option value="{{$type}}">{{$type}}</option>
+    @endforeach
+  </select>   
+</div>
 <div class="file-upload">
   <div class="file-select">
     <div class="file-select-button">Choose File</div>
-    <div class="file-select-name">Ajouter un descriptif...</div>
+    <div class="file-select-name">Ajouter un descriptif...</div required>
     <input type="file" name="chooseFile" class="choose-file">
   </div>
 </div>
@@ -205,7 +235,7 @@ $(document).ready(function(){
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ajouter un employé</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Ajouter un candidat</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -235,7 +265,7 @@ $(document).ready(function(){
         <label for="motdepasse">Mot de passe</label>
       </div>
       <div class="form-floating">
-         <select class="custom-select" id="inputGroupSelect02" name="ville_id">
+         <select class="custom-select" id="inputGroupSelect02" name="ville_id" required>
          <option value="" disabled selected>Ville</option>
            @foreach($villes as $ville)
             <option value="{{$ville->id_adresse}}">{{$ville->ville}}</option>
@@ -248,14 +278,14 @@ $(document).ready(function(){
   <div class="file-select">
     <div class="file-select-button">Choose File</div>
     <div class="file-select-name">Ajouter CV ...</div>
-    <input type="file" name="CV" class="choose-file">
+    <input type="file" name="CV" class="choose-file" required>
   </div>
 </div>
 </div>
 <div class="file-upload">
   <div class="file-select">
     <div class="file-select-button">Choose File</div>
-    <div class="file-select-name">Ajouter lettre de motivation ...</div>
+    <div class="file-select-name">Ajouter lettre de motivation ...</div required>
     <input type="file" name="LMV" class="choose-file">
   </div>
 </div>
@@ -288,16 +318,23 @@ $(document).ready(function(){
     const offreID = $(this).data('id-offre');
     const showform = document.getElementById(`show-form-${offreID}`);
     showform.submit();
+    });
+    $(document).on("click", ".inactive-offre-btn", function (){
+    const offreID = $(this).data('id-offre');
+    const inactiveform = document.getElementById(`inactive-form-${offreID}`);
+    inactiveform.submit();
+    });
     
-});
 
 $(document).on("click", ".edit-offre-btn", function () {
        var offre = $(this).data('id-offre');
         var depart = $(this).data('id-depart');
         var prof = $(this).data('id-prof');
+        var type = $(this).data('type');
         $("#idoffre").val(offre);
         $("#inputGroupSelect03").val(depart);
         $("#inputGroupSelect04").val(prof);
+        $("#inputGroupSelect05").val(type);
     });
 
 

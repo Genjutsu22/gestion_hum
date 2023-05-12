@@ -45,7 +45,8 @@
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>
 </div>
 @elseif($type == "candidat")
-@include('admin.head')
+@include('candidat.head')
+@include('candidat.svg_candidat')
 <div class="text-area">
 <p class="ttl">Bienvenue, {{ $data[1] }} {{$data[2]}}</p>
 <p class="txt">Bienvenue dans votre espace {{$type}}, vous pouvez naviguez en utilisant les liens en haut !</p>

@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 @endsection
 @section('title')
-   Conges
+   Mes demandes de congé
 @endsection
 @section('content')
 @section('icon')        
@@ -41,7 +41,6 @@ $(document).ready(function () {
 
 
 
-{{$id}}
 <h1>Vos demandes de congés</h1>
 <h6>Ici vous pouvez voir vous demandes de congé</h6>
 <table id="student-datatable" class="table table-striped  table-hover table-highlight table-checkable" cellspacing="0">
@@ -63,17 +62,25 @@ $(document).ready(function () {
     <th>{{$conge->id_conge}}</th>
     <th>{{$conge->date_debut}}</th>
     <th>{{$conge->date_fin}}</th>
-    <th>{{$conge->certificat_medical}}</th>
+    <th>
+  @if ($conge->certificat_medical)
+    <a href="{{ url('download_offre', $conge->certificat_medical) }}" download>
+      <button class="btn btn-primary"><i class="fa fa-download"></i></button>
+    </a>
+  @else
+    --------------
+  @endif
+</th>
     <th>{{$conge->date_demande}}</th>
     <th>{{$conge->type_conge}}</th>
-    <th>{{$conge->date_accept}}</th>
+    <th>{{$conge->date_accept?: '--------' }}</th>
     <th>
         @if($conge->etat == '1')
-        <i class="fa fa-check-circle">
+        <i class="fas fa-check-double fa-lg fa-circle"></i>
         @elseif($conge->etat == '0')
-        <i class="fa fa-times-circle">
+        <i class="fa fa-times-circle fa-lg"></i>
         @elseif($conge->etat == null)
-        <i class="fa fa-clock"></i>
+        <i class="fa fa-clock fa-lg"></i>
         @endif
     </th>
   </tr>

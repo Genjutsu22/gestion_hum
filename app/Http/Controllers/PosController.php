@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\adresse;
+use App\Models\candidat;
 use App\Models\conge;
 use App\Models\demande_emploi;
 use App\Models\departement;
@@ -49,7 +50,15 @@ class PosController extends Controller
             $employeId = FacadesDB::table('employes')
              ->where('id_personne', $id)
              ->value('id_employe');
-            Session::put('id',$employeId);
+             $candidatID = FacadesDB::table('candidats')
+             ->where('id_personne', $id)
+             ->value('id_candidat');
+             if($employeId){
+                Session::put('id',$employeId);
+             }elseif($candidatID){
+                Session::put('id',$candidatID);
+             }
+           
            $table = $this->check_user($id);
                    return view('admin.home',[ "data" => $data, "type"=>$table]);
         }
@@ -118,7 +127,6 @@ public function update(Request $request)
         $personne->id_adresse = $request->input('ville_id');
         $employe->id_depart =  $request->input('depart_id');
         $employe->id_prof = $request->input('prof_id');
-    
         $personne->save();
         $employe->save();
         return back()->with('success', 'Les modifactions a été enrgistrés !');
@@ -248,6 +256,7 @@ public function demandesPage(){
      $offres = FacadesDB::table('offre_emplois')
      ->join('professions','professions.id_prof','=','offre_emplois.id_prof')
      ->join('departements','departements.id_depart','=','offre_emplois.id_depart')
+     ->where('termine','=','0')
      ->get();
      $departs = FacadesDB::table('departements')->get();
      $profs = FacadesDB::table('professions')->get();
@@ -264,6 +273,7 @@ public function add_offre(Request $request)
         offre_emploi::create([
             'id_prof' => $request->input('idprof'),
             'id_depart' => $request->input('iddepart'),
+            'type_emploi' => $request->input('typemploi'),
             'detail' => $filename,
         ]);
         return back()->with('success', "Offres ajouté !");
@@ -297,13 +307,13 @@ public function offres_details($id_offre){
     ->join('candidats', 'candidats.id_candidat', '=', 'demande_emplois.id_candidat')
     ->join('personnes', 'personnes.id_personne', '=', 'candidats.id_personne')
     ->join('adresses', 'personnes.id_adresse', '=', 'adresses.id_adresse')
-    ->whereNull('termine')
+    ->where('termine','=','0')
     ->whereNull('accepted')
     ->get();
     $offres = offre_emploi::where('id_offre', $id_offre)
     ->join('departements','departements.id_depart','=','offre_emplois.id_depart')
     ->join('professions','professions.id_prof','=','offre_emplois.id_prof')
-    ->whereNull('termine')
+    ->where('termine','=','0')
     ->get();
     return view('admin.candidature',["offres"=>$offres,"demandes"=>$demandes]);
 }
@@ -382,10 +392,125 @@ public function refuse_offre(request $request, $id_candidat){
   public function mes_demandes(){
     $id = Session::get('id');
     $conges = conge::where('id_employe',$id)->get();
-    // $personne = FacadesDB::table('employes')
-    // ->where('id_employe', $id)
-    // ->join('personnes', 'personnes.id_personne', '=', 'employes.id_personne')
-    // ->get();
     return view('employes.mes_demandes',["conges"=>$conges,"id"=>$id]);
   }
-}  
+  public function demande_page(){
+    $id = Session::get('id');
+    return view('employes.demande_conge',["id"=>$id]);
+  }
+  public function demande_conge(Request $request){
+   try {
+        $fileCM = $request->file('CM');
+        $filenameCM = time() . '.' . $fileCM->getClientOriginalExtension();
+        $fileCM->move(public_path('uploads'), $filenameCM);
+ 
+          FacadesDB::table('conges')->insert([
+            'id_employe' => $request->input('id_employe'),
+           'date_debut' => $request->input('datedebut'),
+           'date_fin' => $request->input('datefin'),
+           'certificat_medical' =>  $filenameCM,
+           'type_conge' => $request->input('type'),
+       ]);
+       return back()->with('success', "Le demande a été enregistré !");
+   } catch (\Throwable $th) {
+       return back()->with('error', 'Error!');
+  }
+  }
+  public function info_candidat(){
+    $id = Session::get('id');
+
+    $candidat = candidat::where('id_candidat', $id)
+        ->join('personnes', 'personnes.id_personne', '=', 'candidats.id_personne')
+        ->join('adresses', 'adresses.id_adresse', '=', 'personnes.id_adresse')
+        ->get();
+        $candidat = $candidat->first();
+        $ville = adresse::all();
+    return view('candidat.info_page', [
+        "candidat" => $candidat,
+        "id" => $id,
+        "villes"=>$ville
+    ]);
+  }
+  public function edit_candidat(Request $request){
+   try {
+    $fileCV = $request->file('CV');
+    $fileLMV = $request->file('LMV');
+    if(!empty($fileCV) ){
+        $filenameCV = time() . '.' . $fileCV->getClientOriginalExtension();
+        $fileCV->move(public_path('uploads'), $filenameCV);
+        $candidat = candidat::find($request->input('idcandidat'));   
+        $candidat->cv = $filenameCV;
+        $candidat->save();
+      }
+      if( !empty($fileLMV)){
+     
+        $filenameLMV = time() . '.' . $fileLMV->getClientOriginalExtension();
+        $fileLMV->move(public_path('uploads'), $filenameLMV);
+        $candidat = candidat::find($request->input('idcandidat'));   
+        $candidat->motivation = $filenameLMV;
+        $candidat->save();
+      }
+       
+       $personne = Personne::find($request->input('idpersonne'));
+       $personne->nom = $request->input('nom');
+       $personne->prenom = $request->input('prenom');
+       $personne->email = $request->input('email');
+       $personne->id_adresse = $request->input('ville_id');
+       $personne->cin=$request->input('cin');
+       $personne->save();
+       return back()->with('success', "Les donnés sont modifiées !");
+   } catch (\Throwable $th) {
+       return back()->with('error', 'Error!');
+  }
+} 
+public function offres_inactive($id){
+    try {
+        $offre = offre_emploi::find($id);
+        $offre->termine = '1';
+        $offre->save();
+       return back()->with('success', "L'offre a été désactivé !");
+   } catch (\Throwable $th) {
+       return back()->with('error', 'Error!');
+  }
+}
+public function offres_candid(){
+ $id = Session::get('id');
+ $offres = FacadesDB::table('offre_emplois')
+ ->join('departements', 'departements.id_depart', '=', 'offre_emplois.id_depart')
+ ->join('professions', 'professions.id_prof', '=', 'offre_emplois.id_prof')
+ ->where('termine', '=', '0')
+ ->whereNotExists(function ($query) use ($id) {
+     $query->select(FacadesDB::raw(1))
+         ->from('demande_emplois')
+         ->whereRaw('demande_emplois.id_offre = offre_emplois.id_offre')
+         ->where('demande_emplois.id_candidat', '=', $id);
+ })
+ ->get();
+ return view('candidat.offres',["offres"=>$offres,"id"=>$id]);
+
+}
+public function demande_emploi(Request $request,$id){
+    try {
+       FacadesDB::table('demande_emplois')->insert([
+           'id_candidat' => $request->input('id_candidat'),
+           'id_offre' => $id,
+       ]);
+       return back()->with('success', "La demande a été enregistré !");
+   } catch (\Throwable $th) {
+       return back()->with('error', 'Error!');
+   } 
+}
+public function mes_demandes_candid(){
+    $id = Session::get('id');
+$offres = FacadesDB::table('candidats')
+    ->where('candidats.id_candidat', '=', $id)
+    ->join('demande_emplois', 'demande_emplois.id_candidat', '=', 'candidats.id_candidat')
+    ->join('offre_emplois', 'offre_emplois.id_offre', '=', 'demande_emplois.id_offre')
+    ->join('departements', 'departements.id_depart', '=', 'offre_emplois.id_depart')
+    ->join('professions', 'professions.id_prof', '=', 'offre_emplois.id_prof')
+    ->get();
+return view('candidat.demandes', ["offres" => $offres]);
+
+    
+}
+} 

@@ -148,8 +148,7 @@ $(document).ready(function(){
         <label for="emailAddress">Email Address</label>
       </div>
       <div class="form-floating">
-         <select class="custom-select" id="inputGroupSelect02" name="ville_id">
-         <option selected>Adresse</option>
+         <select class="custom-select" id="inputGroupSelect02" name="ville_id" required>
            @foreach($villes as $ville)
             <option value="{{$ville->id_adresse}}">{{$ville->ville}}</option>
          @endforeach
@@ -157,14 +156,14 @@ $(document).ready(function(){
        </div>
       
 <div class="form-floating">
-  <select class="custom-select" id="inputGroupSelect03" name="depart_id">
+  <select class="custom-select" id="inputGroupSelect03" name="depart_id" required>
     @foreach($departs as $dep)
     <option value="{{$dep->id_depart}}" >{{$dep->nom_depart}}</option>
     @endforeach
   </select>
 </div>  
 <div class="form-floating">
-  <select class="custom-select" id="inputGroupSelect04" name="prof_id">
+  <select class="custom-select" id="inputGroupSelect04" name="prof_id" required>
     @foreach($profs as $prof)
     <option value="{{$prof->id_prof}}">{{$prof->nom_prof}}</option>
     @endforeach
@@ -227,7 +226,7 @@ $(document).ready(function(){
       
       <div class="form-floating">
     
-         <select class="custom-select" id="inputGroupSelect02" name="ville_id">
+         <select class="custom-select" id="inputGroupSelect02" name="ville_id" required>
          <option value="" disabled selected>Ville</option>
            @foreach($villes as $ville)
             <option value="{{$ville->id_adresse}}">{{$ville->ville}}</option>
@@ -236,7 +235,7 @@ $(document).ready(function(){
        </div>
       
 <div class="form-floating">
-  <select class="custom-select" id="inputGroupSelect03" name="depart_id">
+  <select class="custom-select" id="inputGroupSelect03" name="depart_id" required>
   <option value="" disabled selected>Département</option>
     @foreach($departs as $dep)
     <option value="{{$dep->id_depart}}" >{{$dep->nom_depart}}</option>
@@ -244,7 +243,7 @@ $(document).ready(function(){
   </select>
 </div>  
 <div class="form-floating">
-  <select class="custom-select" id="inputGroupSelect04" name="prof_id">
+  <select class="custom-select" id="inputGroupSelect04" name="prof_id" required>
   <option value="" disabled selected>Profession</option>
     @foreach($profs as $prof)
     <option value="{{$prof->id_prof}}">{{$prof->nom_prof}}</option>

@@ -68,9 +68,9 @@ $(document).ready(function(){
                 <th >CIN</th>
                 <th >Date début</th>
                 <th >Date fin</th>
-                <th >Certificat medical</th>
                 <th >Date demande</th>
                 <th >Type</th>
+                <th >Certificat medical</th>
                 <th >Accepter/refuser</th>
             </tr>
 </thead>
@@ -80,9 +80,17 @@ $(document).ready(function(){
     <th>{{$employe[0]->cin}}</th>
     <th>{{$conge->date_debut}}</th>
     <th>{{$conge->date_fin}}</th>
-    <th>{{$conge->certificat_medical}}</th>
     <th>{{$conge->date_demande}}</th>
     <th>{{$conge->type_conge}}</th>
+    <th>
+  @if ($conge->certificat_medical)
+    <a href="{{ url('download_offre', $conge->certificat_medical) }}" download>
+      <button class="btn btn-primary"><i class="fa fa-download"></i></button>
+    </a>
+  @else
+    --------------
+  @endif
+</th>
     <th>
     <form action="{{ route('conge_accept', $conge->id_conge) }}" method="post" id="accept-form-{{ $conge->id_conge }}">
             @csrf

@@ -12,7 +12,7 @@ class offre_emploi extends Model
 
     protected $primaryKey = 'id_offre';
 
-    protected $fillable = ['id_prof', 'detail','id_depart','date_pub','termine'];
+    protected $fillable = ['id_prof', 'detail','id_depart','date_pub','termine', 'type_emploi',];
 
     public $timestamps = false;
 

@@ -42,6 +42,15 @@ Route::group(['middleware'=>"web"],function(){
     Route::get('/change_password/{id}', [PosController::class, 'change_password'])->name('change_password');
     Route::post('/passchange', [PosController::class, 'passchange'])->name('passchange');
     Route::get('/mes_demandes', [PosController::class, 'mes_demandes'])->name('mes_demandes');
+    Route::get('/demande_page', [PosController::class, 'demande_page'])->name('demande_page');
+    Route::post('/demande_conge', [PosController::class, 'demande_conge'])->name('demande_conge');
+    Route::get('/info_candidat', [PosController::class, 'info_candidat'])->name('info_candidat');
+    Route::post('/edit_candidat', [PosController::class, 'edit_candidat'])->name('edit_candidat');
+    Route::post('/offres_inactive/{id}', [PosController::class, 'offres_inactive'])->name('offres_inactive');
+    Route::get('/offres_candid', [PosController::class, 'offres_candid'])->name('offres_candid');
+    Route::post('/demande_emploi/{id}', [PosController::class, 'demande_emploi'])->name('demande_emploi');
+    Route::get('/mes_demandes_candid', [PosController::class, 'mes_demandes_candid'])->name('mes_demandes_candid');
+    
     
 });
 Route::fallback(function () {

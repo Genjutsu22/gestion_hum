@@ -72,7 +72,8 @@ $(document).ready(function(){
                 <th >Nom</th>
                 <th >Prénom</th>
                 <th >ville</th>
-                <th >Type demande</th>
+                <th>CV</th>
+                <th>Lettre de motivation</th>
                 <th >Accepter/refuser</th>
             </tr>
 </thead>
@@ -83,7 +84,24 @@ $(document).ready(function(){
     <th>{{$demande->nom}}</th>
     <th>{{$demande->prenom}}</th>
     <th>{{$demande->ville}}</th>
-    <th>{{$demande->type_demande}}</th>
+    <th>
+  @if ($demande->cv)
+    <a href="{{ url('download_offre', $demande->cv) }}" download>
+      <button class="btn btn-primary"><i class="fa fa-download"></i></button>
+    </a>
+  @else
+    --------------
+  @endif
+</th>
+<th>
+  @if ($demande->motivation)
+    <a href="{{ url('download_offre', $demande->motivation) }}" download>
+      <button class="btn btn-primary"><i class="fa fa-download"></i></button>
+    </a>
+  @else
+    --------------
+  @endif
+</th>
     <th>
     <form action="{{route('accepter_offre',$demande->id_candidat)}}" method="post" id="accept-form-{{$demande->id_candidat}}">
             @csrf

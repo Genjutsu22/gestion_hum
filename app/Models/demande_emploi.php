@@ -18,7 +18,6 @@ class demande_emploi extends Model
     protected $fillable = [
         'id_candidat',
         'id_offre',
-        'type_demande',
         'accepted'
     ];
 
