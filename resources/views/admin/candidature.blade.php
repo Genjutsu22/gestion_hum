@@ -62,9 +62,6 @@ $(document).ready(function(){
 @endif
 <h1>Les demandes de candidature pour l'offre <br>{{$offres[0]->nom_depart." ".$offres[0]->nom_prof}}</h1>
 <h6>Accepter ou refuser</h6>
-<div class="add_button">
-<button type="button" class="btn btn-default add-student-btn" data-bs-toggle="modal" data-bs-target="#myModal_add"><i class="fa fa-plus"></i> Ajouter candidat</button>
-</div>
 <table id="student-datatable" class="table table-striped  table-hover table-highlight table-checkable" cellspacing="0">
 <thead>
 <tr>

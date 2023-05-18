@@ -53,7 +53,8 @@ $(document).ready(function () {
                 <th >Date demande</th>
                 <th >Type</th>
                 <th >Date d'accept</th>
-                <th> Etat </th>
+                <th >Justification de refus</th>
+                <th>Etat</th>
             </tr>
 </thead>
 <tbody>
@@ -74,6 +75,7 @@ $(document).ready(function () {
     <th>{{$conge->date_demande}}</th>
     <th>{{$conge->type_conge}}</th>
     <th>{{$conge->date_accept?: '--------' }}</th>
+    <th>{{$conge->justif?: '--------' }}</th>
     <th>
         @if($conge->etat == '1')
         <i class="fas fa-check-double fa-lg fa-circle" title="accepter"></i>

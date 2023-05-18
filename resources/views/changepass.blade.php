@@ -9,21 +9,6 @@
    Changer mot de passe
 @endsection
 @section('content')
-@section('icon')        
- <a  href="{{ route('logout')}}"
-                 onclick="event.preventDefault();
-                       document.getElementById('logout-form').submit();"><i id="dropbtn" class="fas fa-power-off"></i></a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
-@endsection
-@if($type == "admin")
-    @include('admin.head')
-@elseif($type =="employe")
-    @include('employes.head')
-@elseif($type == "candidat")
-    @include('candidat.head') 
-@endif
 
 	<script type="text/javascript" class="init">
 	
@@ -45,19 +30,15 @@ $(document).ready(function(){
         <i class="fas fa-check-circle"></i>   <strong>{{session('success')}}</strong> 
     </div>
 @endif
-<h1>{{$pers->nom." ".$pers->prenom}}</h1>
+<br><br>
+<h1>Choisir un mot de passe</h1>
 <h6>Ici, vous pouvez changer votre mot de passe</h6>
 <div class="container-2">
 <div class="form-pass">
-<form name="registration-form" id="registrationForm" method="POST" action="{{route('passchange')}}" role="form">
+<form name="registration-form" id="registrationForm" method="POST" action="{{route('login')}}" role="form">
     <fieldset>
         <legend>Changer mot de passe !</legend>
         @csrf
-      <input name="idemploye" id="idemploye" style="display :none;" value="{{$pers->id_personne}}">
-      <div class="form-floating">
-        <input type="password" name="oldpass" class="myform-control" id="oldpass" placeholder="Ancien mot de passe" value="" required/>
-        <label for="oldpass">Ancien mot de passe</label>
-      </div>
       <div class="form-floating">
         <input type="password" name="nvpass" class="myform-control" id="nvpass" placeholder="Nouveau mot de passe" value="" required/>
         <label for="nvpass">Nouveau mot de passe</label>

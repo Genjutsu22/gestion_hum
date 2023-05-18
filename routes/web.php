@@ -50,9 +50,11 @@ Route::group(['middleware'=>"web"],function(){
     Route::get('/offres_candid', [PosController::class, 'offres_candid'])->name('offres_candid');
     Route::post('/demande_emploi/{id}', [PosController::class, 'demande_emploi'])->name('demande_emploi');
     Route::get('/mes_demandes_candid', [PosController::class, 'mes_demandes_candid'])->name('mes_demandes_candid');
-    Route::get('/apropos', [PosController::class, 'apropos'])->name('apropos');
-    
+    Route::get('/apropos', [PosController::class, 'apropos'])->name('apropos');   
+
 });
+
+
 Route::fallback(function () {
     return view('errors.error404');
 });

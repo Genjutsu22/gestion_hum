@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ForgotPasswordMail;
 use App\Models\adresse;
 use App\Models\candidat;
 use App\Models\conge;
@@ -15,6 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MailSender;
 class PosController extends Controller
 {
     public function check_user($id){  
@@ -82,13 +85,70 @@ class PosController extends Controller
    
     public function login(Request $request)
     { 
-        $p= personne::where('email',$request->input('email'))->get();
-        if($p->isNotEmpty() && ($p[0]->password == md5($request->input('password')) )){
-             $request->session()->put('key',[$p[0]->id_personne,$p[0]->nom,$p[0]->prenom,$p[0]->cin]);
-             return redirect('/');
-        }else{
-            return redirect('/login')->with('error', 'The email or password you entered is incorrect.');
+         if(!empty($request->input('email'))){
+            $p= personne::where('email',$request->input('email'))->get();
+            if($p->isNotEmpty() && ($p[0]->password == md5($request->input('password')) )){
+                 $request->session()->put('key',[$p[0]->id_personne,$p[0]->nom,$p[0]->prenom,$p[0]->cin]);
+                 return redirect('/');
+            }else{
+                return redirect('/login')->with('error', 'The email or password you entered is incorrect.');
+            }
+         }
+         if (!empty($request->input('semail'))) {
+           try {
+            $email = $request->input('semail');
+
+            // Check if the email exists in the personnes table
+            $personne = FacadesDB::table('personnes')->where('email', $email)->first();
+            
+            if ($personne) {
+                // Generate a 5-digit OTP
+                $otp = mt_rand(10000, 99999);
+            
+                // Set the expiration date 1 minute from now
+                $expiryDate = now()->addMinute();
+            
+                // Save the OTP and expiration date in the personnes table
+                FacadesDB::table('personnes')->where('email', $email)->update(['otp' => $otp, 'otp_expiry' => $expiryDate]);
+            
+                // Send the OTP to the user's email
+                Mail::to($email)->send(new ForgotPasswordMail($otp));
+            
+                // Store the email in the session
+                session(['email' => $email]);
+            
+                return view('forgetpass');
+            } else {
+                return redirect('/login')->with('error', "Email introuvable !");// Return a message indicating the email was not found
+            }
+         } catch (\Throwable $th) {
+                return redirect('/login')->with('error', "Erreur !");
+            }
+        }elseif($request->input('nvpass') && $request->input('conpass')){
+            $email = Session::get('email');
+           if($request->input('nvpass')==$request->input('conpass')){
+            FacadesDB::table('personnes')
+            ->where('email', $email)
+            ->update(['password'=>md5($request->input('nvpass'))]);
+            return back()->with("success","mot de passe est modifiés !");
+           }
+            else{
+                return view('changepass');
+            }
         }
+         else{
+            $email = Session::get('email');
+            $personne = Personne::where('email', $email)->first();
+            $storedOtp = $personne->OTP;
+            $generatedDate = $personne->OTP_expiry;
+            $otp = $request->input('digit1') . $request->input('digit2') . $request->input('digit3') . $request->input('digit4') . $request->input('digit5');
+            if ($otp == $storedOtp && $generatedDate && $generatedDate->gt(now()->subMinute())) {
+                return view('changepass');
+            } else {
+                return view('forgetpass')->with('error', "Erreur !");
+            }
+         }
+       
     }
 
     public function logout(Request $request)
@@ -515,4 +575,6 @@ public function apropos(){
     
     return view('apropos');
 }
+
+
 } 

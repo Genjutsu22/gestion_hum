@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('OTP')->nullable();
-            $table->date('OTP_expiry')->nullable();
+            $table->timestamp('OTP_expiry')->nullable();
             $table->string('cin')->unique();
             $table->unsignedInteger('id_adresse');
             $table->foreign('id_adresse')->references('id_adresse')->on('adresses');
